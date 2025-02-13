@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "John's First Post",
+    "content": "This is the content of John's first post.",
+    "slug": "johns-first-post",
+    "userId": 1,
+    "createdAt": "2023-10-01T12:00:00Z"
+  },
+  {
+    "id": 2,
+    "title": "Jane's Second Post",
+    "content": "This is the content of John's second post.",
+    "slug": "Jane-first-post",
+    "userId": 1,
+    "createdAt": "2023-10-02T12:00:00Z"
+  },
+  {
+    "id": 3,
+    "title": "George's First Post",
+    "content": "This is the content of Jane's first post.",
+    "slug": "George-first-post",
+    "userId": 2,
+    "createdAt": "2023-10-03T12:00:00Z"
+  }
+]
