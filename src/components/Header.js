@@ -35,6 +35,9 @@ function Header() {
             <Link to="/users">Users</Link> {/* New link */}
           </li>
           <li>
+            <Link to="/create-user">Create User</Link>
+          </li>
+          <li>
             {isConnected ? (
               <button onClick={handleLogout}>Log out</button>
             ) : (

@@ -1,22 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
-
-export const GET_USER_QUERY = gql`
-  query GetUserQuery($id: ID!) {
-    getUser(id: $id) {
-      fullname
-      id
-      isAdmin
-      password
-      posts {
-        id
-        title
-        slug
-      }
-    }
-  }
-`;
+import { GET_USER_QUERY } from '../Query';
 
 function UserDetail() {
   const { id } = useParams();

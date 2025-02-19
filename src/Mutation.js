@@ -59,3 +59,23 @@ export const LOG_IN_MUTATION = gql`
     }
   }
 `;
+
+export const CREATE_USER_MUTATION = gql`
+  mutation CreateUserMutation($fullname: String!, $isAdmin: Boolean = false, $password: String!) {
+    createUser(fullname: $fullname, isAdmin: $isAdmin, password: $password) {
+      id
+      fullname
+      isAdmin
+    }
+  }
+`;
+
+export const UPDATE_USER_MUTATION = gql`
+  mutation UpdateUserMutation($userId: ID!, $fullname: String!, $isAdmin: Boolean, $password: String) {
+    updateUser(userId: $userId, fullname: $fullname, isAdmin: $isAdmin, password: $password) {
+      id
+      fullname
+      isAdmin
+    }
+  }
+`;

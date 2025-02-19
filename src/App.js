@@ -10,6 +10,8 @@ import UserDetail from './pages/UserDetail';
 import EditDraft from './pages/EditDraft';
 import ProtectedRoute from './protectedRoute';
 import Users from './pages/Users';
+import CreateUser from './pages/CreateUser';
+import UpdateUser from './pages/UpdateUser';
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
         <Route path="/user/:id" element={<UserDetail />} />
         <Route path="/edit-draft/:id/:slug" element={<EditDraft />} />
         <Route path="/users" element={<Users />} /> {/* New route */}
+        <Route path="/create-user" element={<CreateUser />} />
+        <Route path="/update-user/:id" element={<UpdateUser />} />
       </Routes>
     </Router>
   );
