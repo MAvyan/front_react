@@ -8,6 +8,7 @@ const LIST_DRAFTS_QUERY = gql`
       id
       title
       body
+      slug
       user {
         id
         fullname
@@ -20,8 +21,8 @@ function Drafts() {
   const { data } = useQuery(LIST_DRAFTS_QUERY);
   const navigate = useNavigate();
 
-  const handleEditDraft = (id) => {
-    navigate(`/edit-draft/${id}`);
+  const handleEditDraft = (id, slug) => {
+    navigate(`/edit-draft/${id}/${slug}`);
   };
 
   const handleViewProfile = (userId) => {
@@ -36,7 +37,7 @@ function Drafts() {
           <li key={draft.id}>
             <h3>{draft.title}</h3>
             <p>{draft.body}</p>
-            <button onClick={() => handleEditDraft(draft.id)}>Edit</button>
+            <button onClick={() => handleEditDraft(draft.id, draft.slug)}>Edit</button>
             <button onClick={() => handleViewProfile(draft.user.id)}>View Profile</button>
           </li>
         ))}

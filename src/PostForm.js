@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
 import { LIST_POSTS_QUERY } from './Posts';
@@ -35,9 +35,20 @@ const CREATE_DRAFT_MUTATION = gql`
   }
 `;
 
-function PostForm({ onSubmit }) {
+function PostForm({ initialData, onSubmit }) {
   const navigate = useNavigate();
   const [formState, setFormState] = useState({ title: '', body: '', slug: '' });
+
+  console.log(initialData);
+  useEffect(() => {
+    if (initialData) {
+      setFormState({
+        title: initialData.title || '',
+        body: initialData.body || '',
+        slug: initialData.slug || '',
+      });
+    }
+  }, [initialData]);
 
   const [createPost] = useMutation(CREATE_POST_MUTATION, {
     variables: {

@@ -36,7 +36,7 @@ function App() {
         />
         <Route path="/post/:slug" element={<PostDetail />} />
         <Route path="/user/:id" element={<UserDetail />} />
-        <Route path="/edit-draft/:id" element={<EditDraft />} />
+        <Route path="/edit-draft/:id/:slug" element={<EditDraft />} />
       </Routes>
     </Router>
   );
