@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import PostForm from './PostForm';
+import PostForm from '../components/PostForm';
 
 function CreatePost() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ function CreatePost() {
   return (
     <div>
       <h2>Create Post</h2>
-      <PostForm onSubmit={handleSubmit} isDraft />
+      <PostForm initialData={{}} onSubmit={handleSubmit} isEditMode={false} />
     </div>
   );
 }

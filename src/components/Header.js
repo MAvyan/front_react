@@ -1,28 +1,21 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import users from './Data.json';
-import { gql, useMutation } from '@apollo/client';
-
-const LOG_OUT_MUTATION = gql`
-  mutation LogOutMutation {
-    logOut {
-      id
-    }
-  }`;
+import users from '../Data.json';
+import { useMutation } from '@apollo/client';
+import { LOG_OUT_MUTATION } from '../Mutation';
 
 function Header() {
   const navigate = useNavigate();
   const isConnected = localStorage.getItem('isConnected');
-  //const currentUser = userId ? users.find(user => user.id === parseInt(userId)) : null;
 
-   const [logOut] = useMutation(LOG_OUT_MUTATION, {
-      onCompleted: () => {
-        localStorage.removeItem('isConnected');
-        navigate('/');
-      }
-    });
-  
+  const [logOut] = useMutation(LOG_OUT_MUTATION, {
+    onCompleted: () => {
+      localStorage.removeItem('isConnected');
+      navigate('/');
+    }
+  });
+
   const handleLogout = () => {
     logOut();
   };

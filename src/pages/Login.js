@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import users from './Data.json';
-import {gql, useMutation} from '@apollo/client';
-
-const LOG_IN_MUTATION = gql`
-  mutation LogInMutation($fullname: String!, $password: String!) {
-    logIn(fullname: $fullname, password: $password) {
-      id
-    }
-  }`;
+import users from '../Data.json';
+import { useMutation } from '@apollo/client';
+import { LOG_IN_MUTATION } from '../Mutation';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -16,7 +10,6 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  
   const [logIn] = useMutation(LOG_IN_MUTATION, {
     variables: {
       fullname: username,

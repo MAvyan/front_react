@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
-import PostForm from './PostForm';
+import PostForm from '../components/PostForm';
 import { GET_POST_QUERY } from './PostDetail';
 
 function EditDraft() {

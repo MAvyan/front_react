@@ -1,52 +1,8 @@
-import { gql, useMutation } from '@apollo/client';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { LIST_POSTS_QUERY } from './Posts';
-
-const CREATE_POST_MUTATION = gql`
-  mutation CreatePostMutation($title: String!, $slug: String!, $body: String!) {
-    createPost(title: $title, body: $body, slug: $slug, status: "published") {
-      id
-      slug
-      publishedAt
-      title
-      body
-      user {
-        id
-        fullname
-      }
-    }
-  }
-`;
-
-const CREATE_DRAFT_MUTATION = gql`
-  mutation CreateDraftMutation($title: String!, $slug: String!, $body: String!) {
-    createPost(title: $title, body: $body, slug: $slug, status: "draft") {
-      id
-      slug
-      publishedAt
-      title
-      body
-      user {
-        id
-        fullname
-      }
-    }
-  }
-`;
-
-// New mutation
-const UPDATE_POST_MUTATION = gql`
-  mutation UpdatePostMutation($postId: ID!, $title: String!, $slug: String!, $body: String!, $status: String!) {
-    updatePost(postId: $postId, title: $title, slug: $slug, body: $body, status: $status) {
-      id
-      slug
-      title
-      body
-      status
-    }
-  }
-`;
+import { LIST_POSTS_QUERY } from '../pages/Posts';
+import { CREATE_POST_MUTATION, CREATE_DRAFT_MUTATION, UPDATE_POST_MUTATION } from '../Mutation';
 
 function PostForm({ initialData, onSubmit, isEditMode }) {
   const navigate = useNavigate();

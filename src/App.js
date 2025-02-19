@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import Header from './Header';
-import Login from './Login';
-import Posts from './Posts';
-import Drafts from './Drafts';
-import CreatePost from './CreatePost';
-import PostDetail from './PostDetail';
-import UserDetail from './UserDetail';
-import EditDraft from './EditDraft';
+import Header from './components/Header';
+import Login from './pages/Login';
+import Posts from './pages/Posts';
+import Drafts from './pages/Drafts';
+import CreatePost from './pages/CreatePost';
+import PostDetail from './pages/PostDetail';
+import UserDetail from './pages/UserDetail';
+import EditDraft from './pages/EditDraft';
 import ProtectedRoute from './protectedRoute';
 
 function App() {
