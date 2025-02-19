@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { LIST_POSTS_QUERY } from './Posts';
 
 const CREATE_POST_MUTATION = gql`
@@ -35,11 +35,23 @@ const CREATE_DRAFT_MUTATION = gql`
   }
 `;
 
-function PostForm({ initialData, onSubmit }) {
+// New mutation
+const UPDATE_POST_MUTATION = gql`
+  mutation UpdatePostMutation($postId: ID!, $title: String!, $slug: String!, $body: String!, $status: String!) {
+    updatePost(postId: $postId, title: $title, slug: $slug, body: $body, status: $status) {
+      id
+      slug
+      title
+      body
+      status
+    }
+  }
+`;
+
+function PostForm({ initialData, onSubmit, isEditMode }) {
   const navigate = useNavigate();
   const [formState, setFormState] = useState({ title: '', body: '', slug: '' });
 
-  console.log(initialData);
   useEffect(() => {
     if (initialData) {
       setFormState({
@@ -86,12 +98,37 @@ function PostForm({ initialData, onSubmit }) {
     onCompleted: () => navigate('/drafts'),
   });
 
+  const [updatePost] = useMutation(UPDATE_POST_MUTATION, {
+    variables: {
+      postId: initialData.id,
+      title: formState.title,
+      body: formState.body,
+      slug: formState.slug,
+      status: 'published',
+    },
+    onCompleted: () => navigate('/'),
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isEditMode) {
+      updatePost();
+    } else {
+      createPost();
+    }
+  };
+
+  const handleSaveDraft = () => {
+    if (isEditMode) {
+      updatePost({ variables: { ...updatePost.variables, status: 'draft' } });
+    } else {
+      createDraft();
+    }
+  };
+
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        createPost();
-      }}
+      onSubmit={handleSubmit}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -101,7 +138,7 @@ function PostForm({ initialData, onSubmit }) {
         textAlign: 'center',
       }}
     >
-      <h2>Create a post</h2>
+      <h2>{isEditMode ? 'Edit Post' : 'Create a post'}</h2>
 
       <input
         type="text"
@@ -133,9 +170,7 @@ function PostForm({ initialData, onSubmit }) {
       <button type="submit">Submit</button>
       <button
         type="button"
-        onClick={() => {
-          createDraft();
-        }}
+        onClick={handleSaveDraft}
       >
         Save as Draft
       </button>

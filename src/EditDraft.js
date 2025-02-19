@@ -45,7 +45,7 @@ function EditDraft() {
   return (
     <div>
       <h2>Edit Draft</h2>
-      <PostForm initialData={initialData} onSubmit={handleSubmit} />
+      <PostForm initialData={initialData} onSubmit={handleSubmit} isEditMode />
     </div>
   );
 }
