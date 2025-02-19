@@ -1,14 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {gql, useMutation, useQuery} from '@apollo/client';
+
+export const LIST_POSTS_QUERY = gql`
+
+  query ListPostsQuery {
+    listPublications {
+      id
+      slug
+      title
+      body
+      publishedAt
+      user {
+        id
+        fullname
+      }
+    }
+  }
+`;
 
 function Posts() {
-  const [posts, setPosts] = useState([]);
+  const { data } = useQuery(LIST_POSTS_QUERY);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const storedPosts = JSON.parse(localStorage.getItem('posts')) || [];
-    setPosts(storedPosts);
-  }, []);
 
   const handleViewDetails = (slug) => {
     navigate(`/post/${slug}`);
@@ -17,17 +30,18 @@ function Posts() {
   const handleViewProfile = (userId) => {
     navigate(`/user/${userId}`);
   };
+  console.log(data);
 
   return (
     <div>
       <h2>All Posts</h2>
       <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.content}</p>
-            <button onClick={() => handleViewDetails(post.slug)}>View Details</button>
-            <button onClick={() => handleViewProfile(post.userId)}>View Profile</button>
+        {data && data.listPublications.map((Post) => (
+          <li key={Post.id}>
+            <h3>{Post.title}</h3>
+            <p>{Post.body}</p>
+            <button onClick={() => handleViewDetails(Post.slug)}>View Details</button>
+            <button onClick={() => handleViewProfile(Post.user.id)}>View Profile</button>
           </li>
         ))}
       </ul>

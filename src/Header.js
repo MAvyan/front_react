@@ -1,17 +1,30 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import users from './Data.json';
+import { gql, useMutation } from '@apollo/client';
+
+const LOG_OUT_MUTATION = gql`
+  mutation LogOutMutation {
+    logOut {
+      id
+    }
+  }`;
 
 function Header() {
   const navigate = useNavigate();
-  const isAuthenticated = localStorage.getItem('isAuthenticated');
-  const userId = localStorage.getItem('userId'); // Retrieve user ID
-  const currentUser = isAuthenticated && userId ? users.find(user => user.id === parseInt(userId)) : null;
+  const isConnected = localStorage.getItem('isConnected');
+  //const currentUser = userId ? users.find(user => user.id === parseInt(userId)) : null;
 
+   const [logOut] = useMutation(LOG_OUT_MUTATION, {
+      onCompleted: () => {
+        localStorage.removeItem('isConnected');
+        navigate('/');
+      }
+    });
+  
   const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('userId'); // Remove user ID
-    navigate('/login');
+    logOut();
   };
 
   return (
@@ -21,7 +34,6 @@ function Header() {
           <li>
             <Link to="/">Posts</Link>
           </li>
-          {currentUser && currentUser.role === 'admin' && (
             <>
               <li>
                 <Link to="/drafts">Drafts</Link>
@@ -30,9 +42,8 @@ function Header() {
                 <Link to="/create-post">Create Post</Link>
               </li>
             </>
-          )}
           <li>
-            {isAuthenticated ? (
+            {isConnected ? (
               <button onClick={handleLogout}>Log out</button>
             ) : (
               <Link to="/login">Log In</Link>

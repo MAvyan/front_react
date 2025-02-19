@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import users from './Data.json';
+import {gql, useMutation} from '@apollo/client';
+
+const LOG_IN_MUTATION = gql`
+  mutation LogInMutation($fullname: String!, $password: String!) {
+    logIn(fullname: $fullname, password: $password) {
+      id
+    }
+  }`;
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -8,18 +16,21 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  
+  const [logIn] = useMutation(LOG_IN_MUTATION, {
+    variables: {
+      fullname: username,
+      password: password,
+    },
+    onCompleted: () => {
+      localStorage.setItem('isConnected', 'true');
+      navigate('/');
+    }
+  });
+
   const handleLogin = (e) => {
     e.preventDefault();
-    const user = users.find((user) => user.username === username && user.password === password);
-    if (user) {
-      console.log('Login successful');
-      setError('');
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userId', user.id); // Store user ID
-      navigate('/');
-    } else {
-      setError('Invalid username or password');
-    }
+    logIn();
   };
 
   return (

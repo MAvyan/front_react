@@ -21,17 +21,17 @@ function App() {
         <Route
           path="/drafts"
           element={
-            <ProtectedRoute requiredRole="admin">
+            //<ProtectedRoute requiredRole="admin">
               <Drafts />
-            </ProtectedRoute>
+            //</ProtectedRoute>
           }
         />
         <Route
           path="/create-post"
           element={
-            <ProtectedRoute requiredRole="admin">
+            //<ProtectedRoute requiredRole="admin">
               <CreatePost />
-            </ProtectedRoute>
+            //</ProtectedRoute>
           }
         />
         <Route path="/post/:slug" element={<PostDetail />} />

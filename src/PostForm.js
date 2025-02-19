@@ -1,66 +1,133 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { gql, useMutation } from '@apollo/client';
+import { LIST_POSTS_QUERY } from './Posts';
+
+const CREATE_POST_MUTATION = gql`
+  mutation CreatePostMutation($title: String!, $slug: String!, $body: String!) {
+    createPost(title: $title, body: $body, slug: $slug, status: "published") {
+      id
+      slug
+      publishedAt
+      title
+      body
+      user {
+        id
+        fullname
+      }
+    }
+  }
+`;
+
+const CREATE_DRAFT_MUTATION = gql`
+  mutation CreateDraftMutation($title: String!, $slug: String!, $body: String!) {
+    createPost(title: $title, body: $body, slug: $slug, status: "draft") {
+      id
+      slug
+      publishedAt
+      title
+      body
+      user {
+        id
+        fullname
+      }
+    }
+  }
+`;
 
 function PostForm({ onSubmit }) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [slug, setSlug] = useState('');
-  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const [formState, setFormState] = useState({ title: '', body: '', slug: '' });
 
-  const handleSubmit = (e, isDraft = false) => {
-    e.preventDefault();
-    const postData = {
-      title,
-      content,
-      slug,
-      userId: 1,
-      createdAt: new Date().toISOString(),
-    };
+  const [createPost] = useMutation(CREATE_POST_MUTATION, {
+    variables: {
+      title: formState.title,
+      body: formState.body,
+      slug: formState.slug,
+    },
+    update: (cache, { data: { createPost } }) => {
+      const query = cache.readQuery({ query: LIST_POSTS_QUERY });
+      query && cache.writeQuery({
+        query: LIST_POSTS_QUERY,
+        data: {
+          listPublications: [createPost, ...query.listPublications],
+        },
+      });
+    },
+    onCompleted: () => navigate('/'),
+  });
 
-    const storageKey = isDraft ? 'drafts' : 'posts';
-    const existingPosts = JSON.parse(localStorage.getItem(storageKey)) || [];
-    existingPosts.push(postData);
-    localStorage.setItem(storageKey, JSON.stringify(existingPosts));
-
-    onSubmit(postData, isDraft);
-  };
+  const [createDraft] = useMutation(CREATE_DRAFT_MUTATION, {
+    variables: {
+      title: formState.title,
+      body: formState.body,
+      slug: formState.slug,
+    },
+    update: (cache, { data: { createPost } }) => {
+      const query = cache.readQuery({ query: LIST_POSTS_QUERY });
+      query && cache.writeQuery({
+        query: LIST_POSTS_QUERY,
+        data: {
+          listPublications: [createPost, ...query.listPublications],
+        },
+      });
+    },
+    onCompleted: () => navigate('/drafts'),
+  });
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
-      <div>
-        <label htmlFor="title">Title:</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="content">Content:</label>
-        <textarea
-          id="content"
-          name="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="slug">Slug:</label>
-        <input
-          type="text"
-          id="slug"
-          name="slug"
-          value={slug}
-          onChange={(e) => setSlug(e.target.value)}
-          required
-        />
-      </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button type="submit">Save</button>
-      <button type="button" onClick={(e) => handleSubmit(e, true)}>Save as Draft</button>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        createPost();
+      }}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        maxWidth: '900px',
+        margin: 'auto',
+        textAlign: 'center',
+      }}
+    >
+      <h2>Create a post</h2>
+
+      <input
+        type="text"
+        placeholder="Write post title here ..."
+        value={formState.title}
+        onChange={(e) => {
+          setFormState({ ...formState, title: e.target.value });
+        }}
+      />
+
+      <input
+        type="text"
+        placeholder="Write post slug here ..."
+        value={formState.slug}
+        onChange={(e) => {
+          setFormState({ ...formState, slug: e.target.value });
+        }}
+      />
+
+      <textarea
+        rows={25}
+        placeholder="Write post body here ..."
+        value={formState.body}
+        onChange={(e) => {
+          setFormState({ ...formState, body: e.target.value });
+        }}
+      ></textarea>
+
+      <button type="submit">Submit</button>
+      <button
+        type="button"
+        onClick={() => {
+          createDraft();
+        }}
+      >
+        Save as Draft
+      </button>
     </form>
   );
 }
