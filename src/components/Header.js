@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import users from '../Data.json';
 import { useMutation } from '@apollo/client';
 import { LOG_OUT_MUTATION } from '../Mutation';
 
@@ -27,14 +25,15 @@ function Header() {
           <li>
             <Link to="/">Posts</Link>
           </li>
-            <>
-              <li>
-                <Link to="/drafts">Drafts</Link>
-              </li>
-              <li>
-                <Link to="/create-post">Create Post</Link>
-              </li>
-            </>
+          <li>
+            <Link to="/drafts">Drafts</Link>
+          </li>
+          <li>
+            <Link to="/create-post">Create Post</Link>
+          </li>
+          <li>
+            <Link to="/users">Users</Link> {/* New link */}
+          </li>
           <li>
             {isConnected ? (
               <button onClick={handleLogout}>Log out</button>

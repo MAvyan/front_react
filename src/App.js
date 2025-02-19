@@ -9,6 +9,7 @@ import PostDetail from './pages/PostDetail';
 import UserDetail from './pages/UserDetail';
 import EditDraft from './pages/EditDraft';
 import ProtectedRoute from './protectedRoute';
+import Users from './pages/Users';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/post/:slug" element={<PostDetail />} />
         <Route path="/user/:id" element={<UserDetail />} />
         <Route path="/edit-draft/:id/:slug" element={<EditDraft />} />
+        <Route path="/users" element={<Users />} /> {/* New route */}
       </Routes>
     </Router>
   );
