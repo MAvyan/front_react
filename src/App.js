@@ -8,6 +8,7 @@ import CreatePost from './pages/CreatePost';
 import PostDetail from './pages/PostDetail';
 import UserDetail from './pages/UserDetail';
 import EditDraft from './pages/EditDraft';
+import EditPost from './pages/EditPost'; // Import the EditPost component
 import ProtectedRoute from './protectedRoute';
 import Users from './pages/Users';
 import CreateUser from './pages/CreateUser';
@@ -41,6 +42,7 @@ function App() {
         <Route path="/post/:slug" element={<PostDetail />} />
         <Route path="/user/:id" element={<UserDetail />} />
         <Route path="/edit-draft/:id/:slug" element={<EditDraft />} />
+        <Route path="/edit-post/:id/:slug" element={<EditPost />} /> {/* Add the EditPost route */}
         <Route path="/users" element={<Users />} /> {/* New route */}
         <Route path="/create-user" element={<CreateUser />} />
         <Route path="/update-user/:id" element={<UpdateUser />} />

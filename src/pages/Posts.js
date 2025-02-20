@@ -32,6 +32,10 @@ function Posts() {
     navigate(`/user/${userId}`);
   };
 
+  const handleEditPost = (id, slug) => {
+    navigate(`/edit-post/${id}/${slug}`);
+  };
+
   const user = JSON.parse(localStorage.getItem('user'));
   const isAdmin = user?.isAdmin;
 
@@ -48,11 +52,14 @@ function Posts() {
             <button onClick={() => handleViewDetails(Post.slug)}>View Details</button>
             <button onClick={() => handleViewProfile(Post.user.id)}>View Profile</button>
             {isAdmin && (
-              <DeleteButton
-                mutation={DELETE_POST_MUTATION}
-                variables={{ postId: Post.id }}
-                onCompleted={() => navigate('/posts')}
-              />
+              <>
+                <button onClick={() => handleEditPost(Post.id, Post.slug)}>Edit Post</button>
+                <DeleteButton
+                  mutation={DELETE_POST_MUTATION}
+                  variables={{ postId: Post.id }}
+                  onCompleted={() => navigate('/posts')}
+                />
+              </>
             )}
           </li>
         ))}

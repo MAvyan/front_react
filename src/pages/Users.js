@@ -1,6 +1,8 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
+import { DELETE_USER_MUTATION } from '../Mutation';
+import DeleteButton from '../buttons/DeleteButton';
 
 export const LIST_USERS_QUERY = gql`
   query ListUsersQuery {
@@ -23,6 +25,9 @@ function Users() {
     navigate(`/update-user/${user.id}`, { state: { user } });
   };
 
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  const isAdmin = currentUser?.isAdmin;
+
   return (
     <div>
       <h2>All Users</h2>
@@ -33,6 +38,13 @@ function Users() {
             <p>ID: {user.id}</p>
             <p>Account: {user.isAdmin ? 'Admin' : 'Blogger'}</p>
             <button onClick={() => handleEdit(user)}>Edit</button>
+            {isAdmin && (
+              <DeleteButton
+                mutation={DELETE_USER_MUTATION}
+                variables={{ userId: user.id }}
+                onCompleted={() => navigate('/users')}
+              />
+            )}
           </li>
         ))}
       </ul>

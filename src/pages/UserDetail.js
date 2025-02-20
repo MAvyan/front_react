@@ -21,6 +21,9 @@ function UserDetail() {
     return <div>User not found</div>;
   }
 
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  const isAdmin = currentUser?.isAdmin;
+
   return (
     <div>
       <h2>{user.fullname}</h2>
@@ -36,6 +39,13 @@ function UserDetail() {
           </li>
         ))}
       </ul>
+      {isAdmin && (
+        <DeleteButton
+          mutation={DELETE_USER_MUTATION}
+          variables={{ userId: user.id }}
+          onCompleted={() => navigate('/users')}
+        />
+      )}
       <button onClick={() => navigate(-1)}>Retour</button>
     </div>
   );
