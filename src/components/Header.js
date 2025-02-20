@@ -8,6 +8,8 @@ import { useLazyQuery } from '@apollo/client';
 function Header() {
   const navigate = useNavigate();
   const isConnected = localStorage.getItem('isConnected');
+  const user = JSON.parse(localStorage.getItem('user'));
+  const isAdmin = user?.isAdmin;
   const [searchTerm, setSearchTerm] = useState('');
 
   const [logOut] = useMutation(LOG_OUT_MUTATION, {
@@ -39,18 +41,22 @@ function Header() {
           <li>
             <Link to="/">Posts</Link>
           </li>
-          <li>
-            <Link to="/drafts">Drafts</Link>
-          </li>
-          <li>
-            <Link to="/create-post">Create Post</Link>
-          </li>
-          <li>
-            <Link to="/users">Users</Link>
-          </li>
-          <li>
-            <Link to="/create-user">Create User</Link>
-          </li>
+          {isAdmin && (
+            <>
+              <li>
+                <Link to="/drafts">Drafts</Link>
+              </li>
+              <li>
+                <Link to="/create-post">Create Post</Link>
+              </li>
+              <li>
+                <Link to="/users">Users</Link>
+              </li>
+              <li>
+                <Link to="/create-user">Create User</Link>
+              </li>
+            </>
+          )}
           <li>
             {isConnected ? (
               <button onClick={handleLogout}>Log out</button>

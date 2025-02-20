@@ -8,14 +8,17 @@ import CreatePost from './pages/CreatePost';
 import PostDetail from './pages/PostDetail';
 import UserDetail from './pages/UserDetail';
 import EditDraft from './pages/EditDraft';
-import EditPost from './pages/EditPost'; // Import the EditPost component
+import EditPost from './pages/EditPost';
 import ProtectedRoute from './protectedRoute';
 import Users from './pages/Users';
 import CreateUser from './pages/CreateUser';
 import UpdateUser from './pages/UpdateUser';
-import SearchResults from './pages/SearchResults'; // Import the SearchResults component
+import SearchResults from './pages/SearchResults';
 
 function App() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const isAdmin = user?.isAdmin;
+
   return (
     <Router>
       <HeaderWrapper />
@@ -23,30 +26,34 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Posts />} />
         <Route path="/posts" element={<Posts />} />
-        <Route
-          path="/drafts"
-          element={
-            //<ProtectedRoute requiredRole="admin">
-              <Drafts />
-            //</ProtectedRoute>
-          }
-        />
-        <Route
-          path="/create-post"
-          element={
-            //<ProtectedRoute requiredRole="admin">
-              <CreatePost />
-            //</ProtectedRoute>
-          }
-        />
+        {isAdmin && (
+          <>
+            <Route
+              path="/drafts"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <Drafts />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/create-post"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <CreatePost />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/users" element={<Users />} />
+            <Route path="/create-user" element={<CreateUser />} />
+            <Route path="/update-user/:id" element={<UpdateUser />} />
+          </>
+        )}
         <Route path="/post/:slug" element={<PostDetail />} />
         <Route path="/user/:id" element={<UserDetail />} />
         <Route path="/edit-draft/:id/:slug" element={<EditDraft />} />
-        <Route path="/edit-post/:id/:slug" element={<EditPost />} /> {/* Add the EditPost route */}
-        <Route path="/users" element={<Users />} /> {/* New route */}
-        <Route path="/create-user" element={<CreateUser />} />
-        <Route path="/update-user/:id" element={<UpdateUser />} />
-        <Route path="/search-results" element={<SearchResults />} /> {/* Add the SearchResults route */}
+        <Route path="/edit-post/:id/:slug" element={<EditPost />} />
+        <Route path="/search-results" element={<SearchResults />} />
       </Routes>
     </Router>
   );
