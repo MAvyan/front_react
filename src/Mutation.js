@@ -79,3 +79,23 @@ export const UPDATE_USER_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_POST_MUTATION = gql`
+  mutation DeletePostMutation($postId: ID!) {
+    deletePost(postId: $postId) {
+      id
+      title
+      slug
+    }
+  }
+`;
+
+export const DELETE_USER_MUTATION = gql`
+  mutation DeleteUserMutation($userId: ID!) {
+    deleteUser(userId: $userId) {
+      id
+      fullname
+      isAdmin
+    }
+  }
+`;

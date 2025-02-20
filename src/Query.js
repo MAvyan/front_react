@@ -15,3 +15,19 @@ export const GET_USER_QUERY = gql`
     }
   }
 `;
+
+export const SEARCH_PUBLICATIONS_QUERY = gql`
+  query SearchPublicationsQuery($term: String!) {
+    searchPublications(term: $term) {
+      id
+      title
+      slug
+      body
+      publishedAt
+      user {
+        id
+        fullname
+      }
+    }
+  }
+`;

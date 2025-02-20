@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_USER_QUERY } from '../Query';
-import { UPDATE_USER_MUTATION } from '../Mutation';
+import { UPDATE_USER_MUTATION, DELETE_USER_MUTATION } from '../Mutation';
 import UserForm from '../components/UserForm';
+import DeleteButton from '../buttons/DeleteButton';
 
 function UpdateUser() {
   const { id } = useParams();
@@ -52,6 +53,11 @@ function UpdateUser() {
         loading={mutationLoading}
         error={mutationError}
         isUpdate={true}
+      />
+      <DeleteButton
+        mutation={DELETE_USER_MUTATION}
+        variables={{ userId: id }}
+        onCompleted={() => navigate('/users')}
       />
     </div>
   );

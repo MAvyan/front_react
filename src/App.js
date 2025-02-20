@@ -12,6 +12,7 @@ import ProtectedRoute from './protectedRoute';
 import Users from './pages/Users';
 import CreateUser from './pages/CreateUser';
 import UpdateUser from './pages/UpdateUser';
+import SearchResults from './pages/SearchResults'; // Import the SearchResults component
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path="/users" element={<Users />} /> {/* New route */}
         <Route path="/create-user" element={<CreateUser />} />
         <Route path="/update-user/:id" element={<UpdateUser />} />
+        <Route path="/search-results" element={<SearchResults />} /> {/* Add the SearchResults route */}
       </Routes>
     </Router>
   );

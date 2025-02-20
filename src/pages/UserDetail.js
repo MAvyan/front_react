@@ -2,6 +2,8 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 import { GET_USER_QUERY } from '../Query';
+import { DELETE_USER_MUTATION } from '../Mutation';
+import DeleteButton from '../buttons/DeleteButton';
 
 function UserDetail() {
   const { id } = useParams();
