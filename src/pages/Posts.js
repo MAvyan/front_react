@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {gql, useMutation, useQuery} from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { DELETE_POST_MUTATION } from '../Mutation';
+import DeleteButton from '../buttons/DeleteButton';
 
 export const LIST_POSTS_QUERY = gql`
-
   query ListPostsQuery {
     listPublications {
       id
@@ -30,6 +31,10 @@ function Posts() {
   const handleViewProfile = (userId) => {
     navigate(`/user/${userId}`);
   };
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const isAdmin = user?.isAdmin;
+
   console.log(data);
 
   return (
@@ -42,6 +47,13 @@ function Posts() {
             <p>{Post.body}</p>
             <button onClick={() => handleViewDetails(Post.slug)}>View Details</button>
             <button onClick={() => handleViewProfile(Post.user.id)}>View Profile</button>
+            {isAdmin && (
+              <DeleteButton
+                mutation={DELETE_POST_MUTATION}
+                variables={{ postId: Post.id }}
+                onCompleted={() => navigate('/posts')}
+              />
+            )}
           </li>
         ))}
       </ul>

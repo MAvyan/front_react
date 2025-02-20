@@ -13,6 +13,7 @@ function Header() {
   const [logOut] = useMutation(LOG_OUT_MUTATION, {
     onCompleted: () => {
       localStorage.removeItem('isConnected');
+      localStorage.removeItem('user');
       navigate('/');
     }
   });

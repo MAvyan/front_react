@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import users from '../Data.json';
-import { useMutation } from '@apollo/client';
+import { useMutation, useLazyQuery } from '@apollo/client';
 import { LOG_IN_MUTATION } from '../Mutation';
+import { GET_USER_QUERY } from '../Query';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -10,14 +10,29 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const [getUser] = useLazyQuery(GET_USER_QUERY, {
+    onCompleted: (data) => {
+      localStorage.setItem('user', JSON.stringify(data.getUser));
+      navigate('/');
+    },
+    onError: (error) => {
+      setError(error.message);
+    }
+  });
+
   const [logIn] = useMutation(LOG_IN_MUTATION, {
     variables: {
       fullname: username,
       password: password,
     },
-    onCompleted: () => {
+    onCompleted: (data) => {
+      const userId = data.logIn.id;
       localStorage.setItem('isConnected', 'true');
-      navigate('/');
+      localStorage.setItem('userId', userId);
+      getUser({ variables: { id: userId } });
+    },
+    onError: (error) => {
+      setError(error.message);
     }
   });
 
