@@ -7,6 +7,7 @@ import { CREATE_POST_MUTATION, CREATE_DRAFT_MUTATION, UPDATE_POST_MUTATION } fro
 function PostForm({ initialData, onSubmit, isEditMode }) {
   const navigate = useNavigate();
   const [formState, setFormState] = useState({ title: '', body: '', slug: '' });
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (initialData) {
@@ -67,6 +68,15 @@ function PostForm({ initialData, onSubmit, isEditMode }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formState.title || !formState.body || !formState.slug) {
+      setError('All fields are required.');
+      return;
+    }
+    if (/\s/.test(formState.slug)) {
+      setError('Slug should not contain spaces.');
+      return;
+    }
+    setError('');
     if (isEditMode) {
       updatePost();
     } else {
@@ -75,6 +85,15 @@ function PostForm({ initialData, onSubmit, isEditMode }) {
   };
 
   const handleSaveDraft = () => {
+    if (!formState.title || !formState.body || !formState.slug) {
+      setError('All fields are required.');
+      return;
+    }
+    if (/\s/.test(formState.slug)) {
+      setError('Slug should not contain spaces.');
+      return;
+    }
+    setError('');
     if (isEditMode) {
       updatePost({ variables: { ...updatePost.variables, status: 'draft' } });
     } else {
@@ -95,6 +114,8 @@ function PostForm({ initialData, onSubmit, isEditMode }) {
       }}
     >
       <h2>{isEditMode ? 'Edit Post' : 'Create a post'}</h2>
+
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <input
         type="text"
