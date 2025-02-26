@@ -18,12 +18,6 @@ import SearchResults from './pages/SearchResults';
 function App() {
   const user = JSON.parse(localStorage.getItem('user'));
   const isAdmin = user?.isAdmin;
-  const admin = null;
-
-  if (isAdmin == true)
-    admin = 'admin';
-  else
-    admin = 'user';
 
   return (
     <Router>
@@ -37,7 +31,7 @@ function App() {
             <Route
               path="/drafts"
               element={
-                <ProtectedRoute requiredRole={admin}>
+                <ProtectedRoute requiredRole="admin">
                   <Drafts />
                 </ProtectedRoute>
               }
@@ -45,7 +39,7 @@ function App() {
             <Route
               path="/create-post"
               element={
-                <ProtectedRoute requiredRole={admin}>
+                <ProtectedRoute requiredRole="admin">
                   <CreatePost />
                 </ProtectedRoute>
               }
@@ -53,7 +47,7 @@ function App() {
             <Route
               path="/users"
               element={
-                <ProtectedRoute requiredRole={admin}>
+                <ProtectedRoute requiredRole="admin">
                   <Users />
                 </ProtectedRoute>
               }
@@ -61,7 +55,7 @@ function App() {
             <Route
               path="/create-user"
               element={
-                <ProtectedRoute requiredRole={admin}>
+                <ProtectedRoute requiredRole="admin">
                   <CreateUser />
                 </ProtectedRoute>
               }
@@ -69,7 +63,7 @@ function App() {
             <Route
               path="/update-user/:id"
               element={
-                <ProtectedRoute requiredRole={admin}>
+                <ProtectedRoute requiredRole="admin">
                   <UpdateUser />
                 </ProtectedRoute>
               }
