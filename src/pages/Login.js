@@ -32,7 +32,11 @@ function Login() {
       getUser({ variables: { id: userId } });
     },
     onError: (error) => {
-      setError(error.message);
+      if (error.message.includes("Cannot read properties of null (reading 'id')")) {
+        setError("User does not exist.");
+      } else {
+        setError(error.message);
+      }
     }
   });
 

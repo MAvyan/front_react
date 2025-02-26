@@ -29,22 +29,24 @@ function Users() {
   const isAdmin = currentUser?.isAdmin;
 
   return (
-    <div>
-      <h2>All Users</h2>
-      <ul>
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-bold mb-4">All Users</h2>
+      <ul className="space-y-4">
         {data.listUsers.map((user) => (
-          <li key={user.id}>
-            <p>Name: {user.fullname}</p>
+          <li key={user.id} className="bg-gray-800 text-white p-4 rounded-lg shadow-md">
+            <p className="text-xl font-semibold">Name: {user.fullname}</p>
             <p>ID: {user.id}</p>
             <p>Account: {user.isAdmin ? 'Admin' : 'Blogger'}</p>
-            <button onClick={() => handleEdit(user)}>Edit</button>
-            {isAdmin && (
-              <DeleteButton
-                mutation={DELETE_USER_MUTATION}
-                variables={{ userId: user.id }}
-                onCompleted={() => navigate('/users')}
-              />
-            )}
+            <div className="mt-4 flex space-x-2">
+              <button onClick={() => handleEdit(user)} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Edit</button>
+              {isAdmin && (
+                <DeleteButton
+                  mutation={DELETE_USER_MUTATION}
+                  variables={{ userId: user.id }}
+                  onCompleted={() => navigate('/users')}
+                />
+              )}
+            </div>
           </li>
         ))}
       </ul>
