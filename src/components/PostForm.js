@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { LIST_POSTS_QUERY } from '../pages/Posts';
 import { CREATE_POST_MUTATION, CREATE_DRAFT_MUTATION, UPDATE_POST_MUTATION } from '../Mutation';
+import { LIST_DRAFTS_QUERY } from '../pages/Drafts';
 
 function PostForm({ initialData, onSubmit, isEditMode }) {
   const navigate = useNavigate();
@@ -44,11 +45,11 @@ function PostForm({ initialData, onSubmit, isEditMode }) {
       slug: formState.slug,
     },
     update: (cache, { data: { createPost } }) => {
-      const query = cache.readQuery({ query: LIST_POSTS_QUERY });
+      const query = cache.readQuery({ query: LIST_DRAFTS_QUERY });
       query && cache.writeQuery({
-        query: LIST_POSTS_QUERY,
+        query: LIST_DRAFTS_QUERY,
         data: {
-          listPublications: [createPost, ...query.listPublications],
+          listDrafts: [createPost, ...query.listDrafts],
         },
       });
     },
@@ -102,55 +103,56 @@ function PostForm({ initialData, onSubmit, isEditMode }) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-        maxWidth: '900px',
-        margin: 'auto',
-        textAlign: 'center',
-      }}
-    >
-      <h2>{isEditMode ? 'Edit Post' : 'Create a post'}</h2>
+    <form onSubmit={handleSubmit} className="container mx-auto p-4 bg-gray-800 text-white rounded-2xl" style={{ maxWidth: '600px', margin: 'auto' }}>
+      <h2 className="text-2xl font-bold mb-4">{isEditMode ? 'Edit Post' : 'Create a post'}</h2>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <input
-        type="text"
-        placeholder="Write post title here ..."
-        value={formState.title}
-        onChange={(e) => {
-          setFormState({ ...formState, title: e.target.value });
-        }}
-      />
+      <div className="mb-4">
+        <label htmlFor="title" className="block mb-2">Title:</label>
+        <input
+          type="text"
+          id="title"
+          value={formState.title}
+          onChange={(e) => setFormState({ ...formState, title: e.target.value })}
+          className="px-2 py-1 rounded bg-gray-700 text-white w-full"
+        />
+      </div>
 
-      <input
-        type="text"
-        placeholder="Write post slug here ..."
-        value={formState.slug}
-        onChange={(e) => {
-          setFormState({ ...formState, slug: e.target.value });
-        }}
-      />
+      <div className="mb-4">
+        <label htmlFor="slug" className="block mb-2">Slug:</label>
+        <input
+          type="text"
+          id="slug"
+          value={formState.slug}
+          onChange={(e) => setFormState({ ...formState, slug: e.target.value })}
+          className="px-2 py-1 rounded bg-gray-700 text-white w-full"
+        />
+      </div>
 
-      <textarea
-        rows={25}
-        placeholder="Write post body here ..."
-        value={formState.body}
-        onChange={(e) => {
-          setFormState({ ...formState, body: e.target.value });
-        }}
-      ></textarea>
+      <div className="mb-4">
+        <label htmlFor="body" className="block mb-2">Body:</label>
+        <textarea
+          id="body"
+          rows={10}
+          value={formState.body}
+          onChange={(e) => setFormState({ ...formState, body: e.target.value })}
+          className="px-2 py-1 rounded bg-gray-700 text-white w-full"
+        ></textarea>
+      </div>
 
-      <button type="submit">Submit</button>
-      <button
-        type="button"
-        onClick={handleSaveDraft}
-      >
-        Save as Draft
-      </button>
+      <div className="mt-4 flex space-x-2">
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 w-full">
+          {isEditMode ? 'Update Post' : 'Create Post'}
+        </button>
+        <button
+          type="button"
+          onClick={handleSaveDraft}
+          className="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600 w-full"
+        >
+          Save as Draft
+        </button>
+      </div>
     </form>
   );
 }

@@ -28,8 +28,7 @@ function EditPost() {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div>
-      <h2>Edit Post</h2>
+    <div className="flex justify-center items-center min-h-screen">
       <PostForm initialData={initialData} onSubmit={handleSubmit} isEditMode={true} />
     </div>
   );

@@ -40,8 +40,7 @@ function UpdateUser() {
   if (queryError) return <div>Error: {queryError.message}</div>;
 
   return (
-    <div>
-      <h2>Update User</h2>
+    <div className="flex justify-center items-center min-h-screen">
       <UserForm
         fullname={fullname}
         setFullname={setFullname}
@@ -53,11 +52,6 @@ function UpdateUser() {
         loading={mutationLoading}
         error={mutationError}
         isUpdate={true}
-      />
-      <DeleteButton
-        mutation={DELETE_USER_MUTATION}
-        variables={{ userId: id }}
-        onCompleted={() => navigate('/users')}
       />
     </div>
   );

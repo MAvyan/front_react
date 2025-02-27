@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
+import editPenIcon from '../assets/edit-pen.svg'; // Import the edit-pen SVG icon
+import profileIcon from '../assets/profile.svg'; // Import the profile SVG icon
 
-const LIST_DRAFTS_QUERY = gql`
+export const LIST_DRAFTS_QUERY = gql`
   query ListDraftsQuery {
     listDrafts {
       id
@@ -34,13 +36,25 @@ function Drafts() {
       <h2 className="text-2xl font-bold mb-4">All Drafts</h2>
       <ul className="space-y-4">
         {data && data.listDrafts.map((draft) => (
-          <li key={draft.id} className="bg-gray-800 text-white p-4 rounded-lg shadow-md">
+          <li key={draft.id} className="bg-gray-800 text-white p-4 rounded-lg shadow-md relative">
+            <div className="absolute top-2 right-2 flex space-x-2">
+              <img
+                src={editPenIcon}
+                alt="Edit Draft"
+                className="w-6 h-6 cursor-pointer"
+                onClick={() => handleEditDraft(draft.id, draft.slug)}
+                style={{ filter: 'invert(100%)' }} // Apply filter to make the icon white
+              />
+              <img
+                src={profileIcon}
+                alt="View Profile"
+                className="w-6 h-6 cursor-pointer"
+                onClick={() => handleViewProfile(draft.user.id)}
+                style={{ filter: 'invert(100%)' }} // Apply filter to make the icon white
+              />
+            </div>
             <h3 className="text-xl font-semibold">{draft.title}</h3>
             <p className="mt-2">{draft.body}</p>
-            <div className="mt-4 flex space-x-2">
-              <button onClick={() => handleEditDraft(draft.id, draft.slug)} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Edit</button>
-              <button onClick={() => handleViewProfile(draft.user.id)} className="bg-green-500 text-white p-2 rounded hover:bg-green-600">View Profile</button>
-            </div>
           </li>
         ))}
       </ul>

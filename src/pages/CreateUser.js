@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 import { CREATE_USER_MUTATION } from '../Mutation';
 import { useNavigate } from 'react-router-dom';
 import UserForm from '../components/UserForm';
+import { LIST_USERS_QUERY } from '../pages/Users';
 
 function CreateUser() {
   const [fullname, setFullname] = useState('');
@@ -11,6 +12,16 @@ function CreateUser() {
   const navigate = useNavigate();
 
   const [createUser, { loading, error }] = useMutation(CREATE_USER_MUTATION, {
+    variables: { fullname, isAdmin, password },
+    update: (cache, { data: { createUser } }) => {
+      const query = cache.readQuery({ query: LIST_USERS_QUERY });
+      query && cache.writeQuery({
+        query: LIST_USERS_QUERY,
+        data: {
+          listUsers: [createUser, ...query.listUsers],
+        },
+      });
+    },
     onCompleted: () => {
       navigate('/users');
     }
@@ -18,12 +29,11 @@ function CreateUser() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createUser({ variables: { fullname, isAdmin, password } });
+    createUser();
   };
 
   return (
-    <div>
-      <h2>Create User</h2>
+    <div className="flex justify-center items-center min-h-screen">
       <UserForm
         fullname={fullname}
         setFullname={setFullname}

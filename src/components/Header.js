@@ -19,7 +19,7 @@ function Header() {
     onCompleted: () => {
       localStorage.removeItem('isConnected');
       localStorage.removeItem('user');
-      navigate('/');
+      navigate('/login');
     }
   });
 

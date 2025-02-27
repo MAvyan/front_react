@@ -19,8 +19,7 @@ function CreatePost() {
   };
 
   return (
-    <div>
-      <h2>Create Post</h2>
+    <div className="flex justify-center items-center min-h-screen">
       <PostForm initialData={{}} onSubmit={handleSubmit} isEditMode={false} />
     </div>
   );

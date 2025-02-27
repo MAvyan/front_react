@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
+import deleteIcon from '../assets/delete_icon.png'; // Import the delete icon
 
 function DeleteButton({ mutation, variables, onCompleted }) {
   const navigate = useNavigate();
@@ -25,7 +26,11 @@ function DeleteButton({ mutation, variables, onCompleted }) {
   if (loading) return <button disabled>Deleting...</button>;
   if (error) return <button disabled>Error: {error.message}</button>;
 
-  return <button onClick={handleDelete}>Delete</button>;
+  return (
+    <button onClick={handleDelete}>
+      <img src={deleteIcon} alt="Delete" style={{ width: '24px', height: '24px' }} />
+    </button>
+  );
 }
 
 export default DeleteButton;
