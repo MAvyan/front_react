@@ -20,63 +20,65 @@ function App() {
   const isAdmin = user?.isAdmin;
 
   return (
-    <Router>
-      <HeaderWrapper />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Posts />} />
-        <Route path="/posts" element={<Posts />} />
-        {isAdmin && (
-          <>
-            <Route
-              path="/drafts"
-              element={
-                <ProtectedRoute requiredRole="admin">
-                  <Drafts />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/create-post"
-              element={
-                <ProtectedRoute requiredRole="admin">
-                  <CreatePost />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/users"
-              element={
-                <ProtectedRoute requiredRole="admin">
-                  <Users />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/create-user"
-              element={
-                <ProtectedRoute requiredRole="admin">
-                  <CreateUser />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/update-user/:id"
-              element={
-                <ProtectedRoute requiredRole="admin">
-                  <UpdateUser />
-                </ProtectedRoute>
-              }
-            />
-          </>
-        )}
-        <Route path="/post/:slug" element={<PostDetail />} />
-        <Route path="/user/:id" element={<UserDetail />} />
-        <Route path="/edit-draft/:id/:slug" element={<EditDraft />} />
-        <Route path="/edit-post/:id/:slug" element={<EditPost />} />
-        <Route path="/search-results" element={<SearchResults />} />
-      </Routes>
-    </Router>
+    <div className="bg-gray-900 text-white min-h-screen">
+      <Router>
+        <HeaderWrapper />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Posts />} />
+          <Route path="/posts" element={<Posts />} />
+          {isAdmin && (
+            <>
+              <Route
+                path="/drafts"
+                element={
+                  <ProtectedRoute requiredRole="admin">
+                    <Drafts />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/create-post"
+                element={
+                  <ProtectedRoute requiredRole="admin">
+                    <CreatePost />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/users"
+                element={
+                  <ProtectedRoute requiredRole="admin">
+                    <Users />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/create-user"
+                element={
+                  <ProtectedRoute requiredRole="admin">
+                    <CreateUser />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/update-user/:id"
+                element={
+                  <ProtectedRoute requiredRole="admin">
+                    <UpdateUser />
+                  </ProtectedRoute>
+                }
+              />
+            </>
+          )}
+          <Route path="/post/:slug" element={<PostDetail />} />
+          <Route path="/user/:id" element={<UserDetail />} />
+          <Route path="/edit-draft/:id/:slug" element={<EditDraft />} />
+          <Route path="/edit-post/:id/:slug" element={<EditPost />} />
+          <Route path="/search-results" element={<SearchResults />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

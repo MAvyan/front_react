@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { LOG_OUT_MUTATION } from '../Mutation';
-import { SEARCH_PUBLICATIONS_QUERY } from '../Query';
-import { useLazyQuery } from '@apollo/client';
 import logoutIcon from '../assets/logout.svg'; // Import the SVG asset
 import addUserIcon from '../assets/add_user.svg'; // Import the new SVG asset
 import createPostIcon from '../assets/create_post.svg'; // Import the new SVG asset
@@ -23,18 +21,13 @@ function Header() {
     }
   });
 
-  const [searchPublications, { data }] = useLazyQuery(SEARCH_PUBLICATIONS_QUERY, {
-    variables: { term: searchTerm },
-  });
-
   const handleLogout = () => {
     logOut();
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    searchPublications();
-    navigate('/search-results', { state: { results: data?.searchPublications } });
+    navigate('/search-results', { state: { searchTerm } });
   };
 
   return (
